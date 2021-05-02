@@ -1,5 +1,4 @@
 from utils import *
-import numpy as np
 #######################################################################################################################
 # YOU MUST FILL OUT YOUR SECONDARY OPTIMIZATION METRIC (either accuracy or cost)!
 # The metric chosen must be the same for all 5 methods.
@@ -17,6 +16,7 @@ def enforce_demographic_parity(categorical_results, epsilon):
     thresholds = {}
 
     best_thresholds = []
+    max_acc = 0
     equal_prop = 0
     while equal_prop<=1:
         curr_thresholds = []
@@ -31,9 +31,15 @@ def enforce_demographic_parity(categorical_results, epsilon):
                 threshold+=0.01
 
         if len(curr_thresholds)==len(categorical_results.keys()):
-            best_thresholds = curr_thresholds
+            dummy_dict = {}
+            for ind, key in enumerate(categorical_results.keys()):
+                dummy_dict[key] = apply_threshold(categorical_results[key], curr_thresholds[ind])
+                curr_acc = get_total_accuracy(dummy_dict)
+                if curr_acc>max_acc:
+                    max_acc = curr_acc
+                    best_thresholds = curr_thresholds
         equal_prop+=0.01
-
+ 
     for ind, key in enumerate(categorical_results.keys()):
         thresholds[key] = best_thresholds[ind]
         demographic_parity_data[key] = apply_threshold(categorical_results[key], best_thresholds[ind])
@@ -53,6 +59,7 @@ def enforce_equal_opportunity(categorical_results, epsilon):
     equal_opportunity_data = {}
 
     best_thresholds = []
+    max_acc = 0
     equal_tpr = 0
     while equal_tpr<=1:
         curr_thresholds = []
@@ -67,12 +74,19 @@ def enforce_equal_opportunity(categorical_results, epsilon):
                 threshold+=0.01
 
         if len(curr_thresholds)==len(categorical_results.keys()):
-            best_thresholds = curr_thresholds
+            dummy_dict = {}
+            for ind, key in enumerate(categorical_results.keys()):
+                dummy_dict[key] = apply_threshold(categorical_results[key], curr_thresholds[ind])
+                curr_acc = get_total_accuracy(dummy_dict)
+                if curr_acc>max_acc:
+                    max_acc = curr_acc
+                    best_thresholds = curr_thresholds
         equal_tpr+=0.01
 
     for ind, key in enumerate(categorical_results.keys()):
         thresholds[key] = best_thresholds[ind]
         equal_opportunity_data[key] = apply_threshold(categorical_results[key], best_thresholds[ind])
+     
     # Must complete this function!
     return equal_opportunity_data, thresholds
 
@@ -122,6 +136,7 @@ def enforce_predictive_parity(categorical_results, epsilon):
 
     # Must complete this function!
     best_thresholds = []
+    max_acc = 0
     equal_ppv = 0
     while equal_ppv<1:
         curr_thresholds = []
@@ -136,7 +151,13 @@ def enforce_predictive_parity(categorical_results, epsilon):
                 threshold+=0.01
 
         if len(curr_thresholds)==len(categorical_results.keys()):
-            best_thresholds = curr_thresholds
+            dummy_dict = {}
+            for ind, key in enumerate(categorical_results.keys()):
+                dummy_dict[key] = apply_threshold(categorical_results[key], curr_thresholds[ind])
+                curr_acc = get_total_accuracy(dummy_dict)
+                if curr_acc>max_acc:
+                    max_acc = curr_acc
+                    best_thresholds = curr_thresholds
         equal_ppv+=0.01
 
     for ind, key in enumerate(categorical_results.keys()):
