@@ -34,10 +34,10 @@ def enforce_demographic_parity(categorical_results, epsilon):
             dummy_dict = {}
             for ind, key in enumerate(categorical_results.keys()):
                 dummy_dict[key] = apply_threshold(categorical_results[key], curr_thresholds[ind])
-                curr_acc = get_total_accuracy(dummy_dict)
-                if curr_acc>max_acc:
-                    max_acc = curr_acc
-                    best_thresholds = curr_thresholds
+            curr_acc = get_total_accuracy(dummy_dict)
+            if curr_acc>max_acc:
+                max_acc = curr_acc
+                best_thresholds = curr_thresholds
         equal_prop+=0.01
  
     for ind, key in enumerate(categorical_results.keys()):
@@ -77,10 +77,10 @@ def enforce_equal_opportunity(categorical_results, epsilon):
             dummy_dict = {}
             for ind, key in enumerate(categorical_results.keys()):
                 dummy_dict[key] = apply_threshold(categorical_results[key], curr_thresholds[ind])
-                curr_acc = get_total_accuracy(dummy_dict)
-                if curr_acc>max_acc:
-                    max_acc = curr_acc
-                    best_thresholds = curr_thresholds
+            curr_acc = get_total_accuracy(dummy_dict)
+            if curr_acc>max_acc:
+                max_acc = curr_acc
+                best_thresholds = curr_thresholds
         equal_tpr+=0.01
 
     for ind, key in enumerate(categorical_results.keys()):
@@ -112,6 +112,7 @@ def enforce_maximum_profit(categorical_results):
             num_correct = get_num_correct(thresholded_output)
 
             if num_correct > max_correct:
+
                 max_correct = num_correct
                 best_threshold = threshold
 
@@ -154,10 +155,10 @@ def enforce_predictive_parity(categorical_results, epsilon):
             dummy_dict = {}
             for ind, key in enumerate(categorical_results.keys()):
                 dummy_dict[key] = apply_threshold(categorical_results[key], curr_thresholds[ind])
-                curr_acc = get_total_accuracy(dummy_dict)
-                if curr_acc>max_acc:
-                    max_acc = curr_acc
-                    best_thresholds = curr_thresholds
+            curr_acc = get_total_accuracy(dummy_dict)
+            if curr_acc>max_acc:
+                max_acc = curr_acc
+                best_thresholds = curr_thresholds
         equal_ppv+=0.01
 
     for ind, key in enumerate(categorical_results.keys()):
